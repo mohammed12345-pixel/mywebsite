@@ -1,0 +1,97 @@
+<!DOCTYPE html> <!-- بيحدد إن الصفحة HTML5 -->
+<html lang="ar" dir="rtl"> <!-- الصفحة عربية والكتابة من اليمين لليسار -->
+<head>
+  <meta charset="UTF-8"> <!-- الترميز لتشفير الأحرف (عربي وغيره) -->
+  <title>تطبيقي</title> <!-- عنوان الصفحة اللي بيظهر في التاب أو الشريط -->
+</head>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>الرئيسية</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding-top: 100px;
+      direction: rtl;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 50px;
+      font-size: 2.5em;
+    }
+    .button {
+      display: block;
+      width: 250px;
+      margin: 20px auto;
+      padding: 15px;
+      font-size: 1.2em;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      transition: background-color 0.3s;
+    }
+    .button:hover {
+      background-color: #2980b9;
+    }
+    .toggle-mode {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 15px;
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    body.light {
+      background-color: #f0f8ff;
+      color: #2c3e50;
+    }
+    body.dark {
+      background-color: #121212;
+      color: #ddd;
+    }
+    body.dark .button {
+      background-color: #9b59b6;
+    }
+    body.dark .button:hover {
+      background-color: #8e44ad;
+    }
+    body.dark .toggle-mode {
+      background-color: #222;
+    }
+  </style>
+</head>
+<body class="light">
+
+  <button class="toggle-mode" onclick="toggleMode()">🌙</button>
+
+  <h1>مرحبًا بك في تطبيق الأدوات</h1>
+
+  <a class="button" href="clock.html">الساعة الآن</a>
+  <a class="button" href="timer.html">المؤقت</a>
+  <a class="button" href="sebha.html">السبحة الإلكترونية</a>
+
+  <script>
+    function toggleMode() {
+      document.body.classList.toggle("dark");
+      document.body.classList.toggle("light");
+      localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+    }
+
+    window.onload = () => {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") {
+        document.body.classList.add("dark");
+        document.body.classList.remove("light");
+      }
+    };
+  </script>
+
+</body>
+</html>

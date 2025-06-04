@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>الساعة</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding-top: 80px;
+      margin: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #clock {
+      font-size: 5em;
+      margin-bottom: 30px;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      user-select: none;
+    }
+
+    .toggle-mode {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 15px;
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 10;
+      user-select: none;
+    }
+
+    body.light {
+      background-color: #fdf6e3;
+      color: #6b4226;
+    }
+
+    body.dark {
+      background-color: #121212;
+      color: white;
+    }
+
+    body.dark a {
+      background-color: #2980b9;
+    }
+
+    body.dark .toggle-mode {
+      background-color: #222;
+    }
+  </style>
+</head>
+<body class="light">
+
+  <button class="toggle-mode" onclick="toggleMode()">🌙</button>
+
+  <div id="clock">--:--:--</div>
+
+  <a href="index.html">الرجوع للقائمة الرئيسية</a>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const hours = now.getHours() % 12 || 12;
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      const ampm = now.getHours() >= 12 ? 'م' : 'ص';
+      document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
+    }
+
+    function toggleMode() {
+      document.body.classList.toggle("dark");
+      document.body.classList.toggle("light");
+      localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+    }
+
+    window.onload = () => {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") {
+        document.body.classList.add("dark");
+        document.body.classList.remove("light");
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+    };
+  </script>
+
+</body>
+</html>

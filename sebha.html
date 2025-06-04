@@ -1,0 +1,147 @@
+<!DOCTYPE html> <!-- بيحدد إن الصفحة HTML5 -->
+<html lang="ar" dir="rtl"> <!-- الصفحة عربية والكتابة من اليمين لليسار -->
+<head>
+  <meta charset="UTF-8"> <!-- الترميز لتشفير الأحرف (عربي وغيره) -->
+  <title>تطبيقي</title> <!-- عنوان الصفحة اللي بيظهر في التاب أو الشريط -->
+</head>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>السبحة الإلكترونية</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding-top: 60px;
+      direction: rtl;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    #count {
+      font-size: 4em;
+      margin: 20px 0;
+    }
+    .circle-btn {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      font-size: 1.5em;
+      background-color: #8e44ad;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+      box-shadow: 0 0 10px #8e44ad;
+      user-select: none;
+    }
+    .reset-btn {
+      padding: 8px 15px;
+      font-size: 0.9em;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      position: relative;
+      top: -90px;
+      left: 60px;
+      user-select: none;
+    }
+    a {
+      display: inline-block;
+      margin-top: 60px;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      user-select: none;
+    }
+    .toggle-mode {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 15px;
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 10;
+      user-select: none;
+    }
+    body.light {
+      background-color: #fdf6e3;
+      color: #6b4226;
+    }
+    body.dark {
+      background-color: #121212;
+      color: #ffffff;
+    }
+    body.dark .circle-btn {
+      background-color: #9b59b6;
+      box-shadow: 0 0 10px #9b59b6;
+    }
+    body.dark .reset-btn {
+      background-color: #c0392b;
+    }
+    body.dark a {
+      background-color: #2980b9;
+    }
+    body.dark .toggle-mode {
+      background-color: #222;
+    }
+  </style>
+</head>
+<body class="light">
+
+<button class="toggle-mode" onclick="toggleMode()">🌙</button>
+
+<div id="count">0</div>
+
+<button class="circle-btn" onclick="tasbeeh()">سبّح</button>
+<button class="reset-btn" onclick="reset()">⟳</button>
+
+<a href="index.html">الرجوع للقائمة الرئيسية</a>
+
+<!-- صوت التسبيح -->
+<audio id="clickSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_4b3b7c3d94.mp3"></audio>
+
+<script>
+  let count = localStorage.getItem("tasbeehCount") || 0;
+  document.getElementById("count").textContent = count;
+
+  function tasbeeh() {
+    count++;
+    document.getElementById("count").textContent = count;
+    localStorage.setItem("tasbeehCount", count);
+
+    let sound = document.getElementById("clickSound");
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
+  }
+
+  function reset() {
+    count = 0;
+    document.getElementById("count").textContent = count;
+    localStorage.setItem("tasbeehCount", count);
+  }
+
+  function toggleMode() {
+    document.body.classList.toggle("dark");
+    document.body.classList.toggle("light");
+    localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+  }
+
+  window.onload = () => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark");
+      document.body.classList.remove("light");
+    }
+  };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html> <!-- بيحدد إن الصفحة HTML5 -->
+<html lang="ar" dir="rtl"> <!-- الصفحة عربية والكتابة من اليمين لليسار -->
+<head>
+  <meta charset="UTF-8"> <!-- الترميز لتشفير الأحرف (عربي وغيره) -->
+  <title>تطبيقي</title> <!-- عنوان الصفحة اللي بيظهر في التاب أو الشريط -->
+</head>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<title>المؤقت</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    padding-top: 80px;
+    direction: rtl;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  #timer {
+    font-size: 5em;
+    margin-bottom: 30px;
+  }
+  button {
+    font-size: 1.3em;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    background-color: #8e44ad;
+    color: white;
+  }
+  a {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+  }
+  .toggle-mode {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 15px;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 10;
+  }
+  body.light {
+    background-color: #fdf6e3;
+    color: #6b4226;
+  }
+  body.dark {
+    background-color: #121212;
+    color: #ffffff;
+  }
+  body.dark a {
+    background-color: #2980b9;
+  }
+  body.dark button {
+    background-color: #9b59b6;
+  }
+  body.dark .toggle-mode {
+    background-color: #222;
+  }
+</style>
+</head>
+<body class="light">
+
+<button class="toggle-mode" onclick="toggleMode()">🌙</button>
+
+<div id="timer">00:00:00</div>
+
+<button onclick="startTimer()">ابدأ</button>
+<button onclick="pauseTimer()">إيقاف</button>
+<button onclick="resetTimer()">إعادة ضبط</button>
+
+<a href="index.html">الرجوع للقائمة الرئيسية</a>
+
+<audio id="pendulumSound" src="https://freesound.org/data/previews/247/247344_4486188-lq.mp3"></audio>
+
+<script>
+  let totalSeconds = 0;
+  let timerInterval = null;
+
+  function pad(n) {
+    return n < 10 ? '0' + n : n;
+  }
+
+  function playPendulumSound() {
+    const sound = document.getElementById("pendulumSound");
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
+  }
+
+  function updateTimer() {
+    totalSeconds++;
+
+    let hours = Math.floor(totalSeconds / 3600);
+    let minutes = Math.floor((totalSeconds % 3600) / 60);
+    let seconds = totalSeconds % 60;
+
+    document.getElementById("timer").textContent =
+      pad(hours) + ":" + pad(minutes) + ":" + pad(seconds);
+
+    playPendulumSound();
+  }
+
+  function startTimer() {
+    if (!timerInterval) {
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+  }
+
+  function pauseTimer() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+  }
+
+  function resetTimer() {
+    pauseTimer();
+    totalSeconds = 0;
+    document.getElementById("timer").textContent = "00:00:00";
+  }
+
+  function toggleMode() {
+    document.body.classList.toggle("dark");
+    document.body.classList.toggle("light");
+    localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+  }
+
+  window.onload = () => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark");
+      document.body.classList.remove("light");
+    }
+  };
+</script>
+
+</body>
+</html>
